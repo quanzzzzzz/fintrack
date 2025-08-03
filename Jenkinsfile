@@ -26,7 +26,11 @@ pipeline {
 
         stage('Deploy Local') {
             steps {
-                bat 'docker-compose down'
+                // Dừng & dọn container đang chạy (tránh lỗi Conflict)
+                bat 'docker-compose down --remove-orphans'
+                // Xoá container backend nếu vẫn còn (an toàn)
+                bat 'docker rm -f backend || echo "No existing backend container to remove"'
+                // Khởi động lại
                 bat 'docker-compose up -d'
             }
         }
