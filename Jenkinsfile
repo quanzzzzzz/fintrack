@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven 3.9.11'  // ⚠️ Phải đúng với tên Maven bạn đã thêm trong "Global Tool Configuration"
+        maven 'Maven_3.9.11'  // ⚠️ Phải đúng với tên Maven bạn đã thêm trong "Global Tool Configuration"
     }
 
     environment {
