@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven_3.9.11'  // ⚠️ Phải đúng với tên Maven bạn đã thêm trong "Global Tool Configuration"
+        maven 'Maven_3.9.11'  // Tên Maven đã cấu hình
     }
 
     environment {
@@ -26,13 +26,17 @@ pipeline {
 
         stage('Deploy Local') {
             steps {
-                // Dừng & dọn container đang chạy (tránh lỗi Conflict)
                 bat 'docker-compose down --remove-orphans'
-                // Xoá container backend nếu vẫn còn (an toàn)
-                bat 'docker rm -f backend || echo "No existing backend container to remove"'
-                // Khởi động lại
+                bat 'docker rm -f backend frontend || echo "No existing containers to remove"'
                 bat 'docker-compose up -d'
             }
+        }
+    }
+
+    post {
+        failure {
+            echo 'Pipeline failed. Cleaning up...'
+            bat 'docker-compose down --remove-orphans'
         }
     }
 }
